@@ -1,6 +1,7 @@
 package com.aamirashraf.instagramui_compose
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -24,6 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,7 +95,18 @@ fun ProfileSection(
                     .size(100.dp)
                     .weight(3f)  //30%
             )
+            Spacer(modifier = Modifier.width(16.dp))
+            StatSection(modifier = Modifier.weight(7f))
         }
+        ProfileDescription(
+            displayName = "Programming Mentor",
+            description = "10 years of coding experiences\n"+
+            "Want me to make your app? Send me an email!\n"+
+            "Android tutorials? Subscribe to my channel!",
+            url ="https://youtube.com/c/PhillippLackner" ,
+            followedBy = listOf("codinginflow","MaxMillian") ,
+            otherCount = 17
+        )
     }
 }
 @Composable
@@ -111,3 +126,127 @@ fun RoundImage(
             .clip(CircleShape)
         )
 }
+@Composable
+fun StatSection(
+    modifier: Modifier=Modifier
+){
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        ProfileStat(numberText = "600", text = "Posts")
+        ProfileStat(numberText = "99K", text = "Followers")
+        ProfileStat(numberText = "72", text = "Following")
+    }
+}
+@Composable
+fun ProfileStat(
+    numberText:String,
+    text:String,
+    modifier: Modifier=Modifier
+){
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Text(text = numberText,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+            )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = text)
+    }
+}
+@Composable
+fun ProfileDescription(
+    displayName:String,
+    description:String,
+    url:String,
+    followedBy:List<String>,
+    otherCount:Int
+){
+    val letterSpacing=0.5.sp
+    val lineHeight=20.sp
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        Text(text = displayName,
+            fontWeight = FontWeight.Bold,
+            letterSpacing=letterSpacing,
+            lineHeight = lineHeight
+
+        )
+        Text(text = description,
+            letterSpacing=letterSpacing,
+            lineHeight = lineHeight
+        )
+        Text(text = url,
+            color = Color(0xff3d3d91),
+            letterSpacing=letterSpacing,
+            lineHeight = lineHeight
+        )
+        if(followedBy.isNotEmpty()){
+            //means that the followed by is not empty
+            Text(text = buildAnnotatedString {
+                //build annotated string is used to set style between text in compose
+                //here we can push pop style in the top of stack
+                val boldStyle=SpanStyle(
+                    Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
+                append("Followed by")
+
+                followedBy.forEachIndexed { index, name ->
+                    pushStyle(boldStyle)
+                    append(name)
+                    pop()
+                    if(index<followedBy.size-1){
+                        append(", ")
+                    }
+
+                }
+                if(otherCount>2){
+                    append(" and ")
+                    pushStyle(boldStyle)
+                    append("$otherCount others")
+                }
+            },
+                letterSpacing=letterSpacing,
+                lineHeight=lineHeight
+            )
+        }
+
+    }
+
+}
+//@Composable
+//fun Aamir(
+//    modifier: Modifier=Modifier
+//){
+//    Column(
+//        modifier = modifier
+//            .width(400.dp)
+//            .height(200.dp)
+//            .background(Color.Cyan)
+//    ) {
+//        Text(text = "hello world",
+//            modifier=Modifier
+//                .padding(30.dp)
+//
+//                .background(Color.Red)
+//                .width(100.dp)
+//                .height(100.dp)
+////                .padding(30.dp)
+//
+//
+//            )
+//
+//        Text(text = "Android dev",
+//
+//        )
+//    }
+//}
