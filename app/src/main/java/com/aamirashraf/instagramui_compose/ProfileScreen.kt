@@ -109,6 +109,9 @@ fun ProfileSection(
         )
     }
 }
+//the best way to learn the compose is to practice more and more
+//and i am ready for it and i will do my best hardwrok to gain it
+//mobile development is my features
 @Composable
 fun RoundImage(
     image:Painter,
