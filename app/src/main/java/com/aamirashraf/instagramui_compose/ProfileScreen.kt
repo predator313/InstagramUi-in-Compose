@@ -22,8 +22,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,6 +79,9 @@ fun ProfileScreen(){
                 .fillMaxWidth()
 
         )
+        Spacer(modifier = Modifier.height(25.dp))
+        PostTabView(imageWithText = , onTabSelected = )
+        
     }
 }
 @Composable
@@ -358,6 +364,40 @@ fun HighLightSection(
                 )
             }
         }
+    }
+}
+@Composable
+fun PostTabView(
+    modifier: Modifier=Modifier,
+    imageWithText:List<StoryHighlights>,
+    onTabSelected:(selectedIndex:Int)->Unit
+){
+    var selectedTabIndex by remember {
+        mutableStateOf(0)
+    }
+    val inActiveColor=Color(0xff777777)
+    TabRow(
+        selectedTabIndex = selectedTabIndex,
+        contentColor = Color.Black,
+        containerColor = Color.Transparent ,  //initially this is background color
+        modifier = modifier
+    ) {
+        imageWithText.forEachIndexed { index, item ->
+            Tab(selected = selectedTabIndex==index,
+                selectedContentColor = Color.Black,
+                unselectedContentColor = inActiveColor,
+                onClick = {
+                    selectedTabIndex=index
+                    onTabSelected(index)
+                }) {
+                Icon(
+                    painter = item.image,
+                    contentDescription = item.text,
+                    tint = if(selectedTabIndex==index)Color.Black else inActiveColor
+                )
+            }
+        }
+
     }
 }
 //@Composable
