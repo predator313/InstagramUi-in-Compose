@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,10 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.aamirashraf.instagramui_compose.model.StoryHighlights
 
 
 @Composable
@@ -51,6 +54,28 @@ fun ProfileScreen(){
         Spacer(modifier = Modifier.height(25.dp))
         ButtonSection(modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(25.dp))
+        HighLightSection(highlights = listOf(
+            StoryHighlights(
+                image = painterResource(id = R.drawable.youtube),
+                text = "YouTube"
+            ),
+            StoryHighlights(
+                image = painterResource(id = R.drawable.qa),
+                text = "Q&A"
+            ),
+            StoryHighlights(
+                image = painterResource(id = R.drawable.discord),
+                text = "Discord"
+            ),
+            StoryHighlights(
+                image = painterResource(id = R.drawable.telegram),
+                text = "Telegram"
+            )
+        ),
+            modifier = Modifier
+                .fillMaxWidth()
+
+        )
     }
 }
 @Composable
@@ -305,6 +330,33 @@ fun ActionButton(
                 contentDescription = null,
                 tint = Color.Black
             )
+        }
+    }
+}
+@Composable
+fun HighLightSection(
+    modifier: Modifier=Modifier,
+    highlights: List<StoryHighlights>
+){
+    LazyRow(modifier=modifier){
+        items(highlights.size){
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(15.dp)
+            ) {
+                RoundImage(
+                    image =highlights[it].image,
+                    modifier = Modifier
+                        .size(70.dp)
+                )
+                Text(
+                    text =highlights[it].text,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
