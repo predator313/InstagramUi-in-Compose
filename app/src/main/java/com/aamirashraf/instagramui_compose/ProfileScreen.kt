@@ -80,6 +80,7 @@ fun ProfileScreen(){
 
         )
         Spacer(modifier = Modifier.height(25.dp))
+        //here we are going to implements the remaining section
         PostTabView(imageWithText = , onTabSelected = )
         
     }
