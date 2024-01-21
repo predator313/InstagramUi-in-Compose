@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,9 +32,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,6 +51,9 @@ import com.aamirashraf.instagramui_compose.model.StoryHighlights
 
 @Composable
 fun ProfileScreen(){
+    var selectedTabIndex by remember{
+        mutableStateOf(0)
+    }
     Column(modifier = Modifier
         .fillMaxSize()
     ) {
@@ -81,8 +88,41 @@ fun ProfileScreen(){
         )
         Spacer(modifier = Modifier.height(25.dp))
         //here we are going to implements the remaining section
-        PostTabView(imageWithText = , onTabSelected = )
-        
+        PostTabView(
+            imageWithText = listOf(
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_grid),
+                    text = "Posts"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_reels),
+                    text = "Reels"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_igtv),
+                    text = "IGTV"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.profile),
+                    text = "Profile"
+                ),
+            )
+        ) {
+            selectedTabIndex = it
+        }
+        when(selectedTabIndex) {
+            0 -> PostSection(
+                post = listOf(
+                    painterResource(id = R.drawable.kmm),
+                    painterResource(id = R.drawable.intermediate_dev),
+                    painterResource(id = R.drawable.master_logical_thinking),
+                    painterResource(id = R.drawable.bad_habits),
+                    painterResource(id = R.drawable.multiple_languages),
+                    painterResource(id = R.drawable.learn_coding_fast),
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 @Composable
@@ -399,6 +439,28 @@ fun PostTabView(
             }
         }
 
+    }
+}
+@Composable
+fun PostSection(
+    post:List<Painter>,
+    modifier: Modifier=Modifier
+){
+    LazyVerticalGrid(
+        columns =GridCells.Fixed(3),
+        modifier=modifier
+            .scale(1.01f)
+    ){
+        items(post.size){
+            Image(painter = post[it], contentDescription = null, contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White
+                    )
+            )
+        }
     }
 }
 //@Composable
